@@ -19,6 +19,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
+                    <img src="../assets/LOGO-Photoroom.png" alt="Logo" class="logo_img">
                     <h1 class="logo-text">
                         <span class="logo-paco">PACO</span>
                         <span class="logo-subtitle">PAN CASERO</span>
@@ -103,9 +104,9 @@
             <section id="add-recipe" class="view">
                 <div class="form-container">
                     <div class="form-header">
-                        <i class="fas fa-utensils"></i>
-                        <h2>Agregar Nueva Receta</h2>
-                        <p>Completa todos los campos para registrar tu receta</p>
+                        <i class="fa-solid fa-receipt"></i>
+                        <h2 id="form-title">Agregar Nueva Receta</h2>
+                        <p id="form-subtitle">Completa todos los campos para registrar tu receta</p>
                     </div>
 
                     <form id="recipe-form" class="recipe-form">
@@ -226,9 +227,68 @@
                         <div id="modal-instructions-content"></div>
                     </div>
                 </div>
+                <!-- Agregando botones de editar y eliminar en el modal -->
+                <div class="modal-actions">
+                    <button id="modal-edit-btn" class="btn-warning">
+                        <i class="fas fa-edit"></i>
+                        Editar Receta
+                    </button>
+                    <button id="modal-delete-btn" class="btn-danger">
+                        <i class="fas fa-trash"></i>
+                        Eliminar Receta
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Nuevo modal para autenticación -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content auth-modal-content">
+            <button class="modal-close" aria-label="Cerrar modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-body">
+                <div class="auth-header">
+                    <i class="fas fa-lock"></i>
+                    <h2 id="auth-modal-title">Autenticación Requerida</h2>
+                    <p id="auth-modal-message">Ingresa la contraseña para continuar</p>
+                </div>
+                <form id="auth-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="auth-password" class="form-label">
+                            <i class="fas fa-key"></i>
+                            Contraseña
+                        </label>
+                        <input 
+                            type="password" 
+                            id="auth-password" 
+                            class="form-input" 
+                            placeholder="Ingresa tu contraseña"
+                            required
+                            autocomplete="off"
+                        >
+                    </div>
+                    <div id="auth-error" class="alert alert-error" style="display: none; margin-top: 1rem;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Contraseña incorrecta</span>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary" id="auth-submit-btn">
+                            <i class="fas fa-check"></i>
+                            Confirmar
+                        </button>
+                        <button type="button" class="btn-secondary" id="auth-cancel-btn">
+                            <i class="fas fa-times"></i>
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Footer -->
     <footer class="footer">

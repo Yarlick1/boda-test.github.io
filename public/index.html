@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de gestión de recetas para PACO PAN CASERO">
+    <title>PACO PAN CASERO - Gestión de Recetas</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1 class="logo-text">
+                        <span class="logo-paco">PACO</span>
+                        <span class="logo-subtitle">PAN CASERO</span>
+                    </h1>
+                </div>
+                <nav class="nav">
+                    <button class="nav-btn active" data-view="dashboard">
+                        <i class="fas fa-th-large"></i>
+                        <span>Recetas</span>
+                    </button>
+                    <button class="nav-btn" data-view="add-recipe">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Agregar</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Dashboard View -->
+            <section id="dashboard" class="view active">
+                <!-- Search Bar -->
+                <div class="search-section">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input 
+                            type="text" 
+                            id="search-input" 
+                            class="search-input" 
+                            placeholder="Buscar por nombre de receta o ingrediente..."
+                            aria-label="Buscar recetas"
+                        >
+                        <button id="clear-search" class="clear-btn" aria-label="Limpiar búsqueda">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="category-filters">
+                    <button class="filter-chip active" data-category="all">
+                        Todas
+                    </button>
+                    <button class="filter-chip" data-category="Pan Blanco">
+                        Pan Blanco
+                    </button>
+                    <button class="filter-chip" data-category="Pan Dulce">
+                        Pan Dulce
+                    </button>
+                    <button class="filter-chip" data-category="Pan de Muerto">
+                        Pan de Muerto
+                    </button>
+                    <button class="filter-chip" data-category="Pizza">
+                        Pizza
+                    </button>
+                    <button class="filter-chip" data-category="Otros">
+                        Otros
+                    </button>
+                </div>
+
+                <!-- Recipes Grid -->
+                <div id="recipes-container" class="recipes-grid">
+                    <!-- Loading State -->
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Cargando recetas...</p>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state" style="display: none;">
+                    <i class="fas fa-bread-slice"></i>
+                    <h3>No se encontraron recetas</h3>
+                    <p>Intenta con otra búsqueda o agrega una nueva receta</p>
+                </div>
+            </section>
+
+            <!-- Add Recipe View -->
+            <section id="add-recipe" class="view">
+                <div class="form-container">
+                    <div class="form-header">
+                        <i class="fas fa-utensils"></i>
+                        <h2>Agregar Nueva Receta</h2>
+                        <p>Completa todos los campos para registrar tu receta</p>
+                    </div>
+
+                    <form id="recipe-form" class="recipe-form">
+                        <!-- Recipe Name -->
+                        <div class="form-group">
+                            <label for="recipe-name" class="form-label">
+                                <i class="fas fa-bread-slice"></i>
+                                Nombre de la Receta
+                            </label>
+                            <input 
+                                type="text" 
+                                id="recipe-name" 
+                                name="name" 
+                                class="form-input" 
+                                placeholder="Ej: Bolillo Tradicional"
+                                required
+                            >
+                        </div>
+
+                        <!-- Category -->
+                        <div class="form-group">
+                            <label for="recipe-category" class="form-label">
+                                <i class="fas fa-tags"></i>
+                                Categoría
+                            </label>
+                            <select id="recipe-category" name="category" class="form-select" required>
+                                <option value="">Selecciona una categoría</option>
+                                <option value="Pan Blanco">Pan Blanco</option>
+                                <option value="Pan Dulce">Pan Dulce</option>
+                                <option value="Pan de Muerto">Pan de Muerto</option>
+                                <option value="Pizza">Pizza</option>
+                                <option value="Otros">Otros</option>
+                            </select>
+                        </div>
+
+                        <!-- Ingredients -->
+                        <div class="form-group">
+                            <label for="recipe-ingredients" class="form-label">
+                                <i class="fas fa-list-ul"></i>
+                                Ingredientes
+                                <span class="form-hint">(Uno por línea con cantidad)</span>
+                            </label>
+                            <textarea 
+                                id="recipe-ingredients" 
+                                name="ingredients" 
+                                class="form-textarea" 
+                                rows="8"
+                                placeholder="Ej:&#10;500g Harina de trigo&#10;10g Sal&#10;300ml Agua tibia&#10;5g Levadura seca"
+                                required
+                            ></textarea>
+                        </div>
+
+                        <!-- Instructions -->
+                        <div class="form-group">
+                            <label for="recipe-instructions" class="form-label">
+                                <i class="fas fa-clipboard-list"></i>
+                                Instrucciones de Preparación
+                                <span class="form-hint">(Describe el proceso paso a paso)</span>
+                            </label>
+                            <textarea 
+                                id="recipe-instructions" 
+                                name="instructions" 
+                                class="form-textarea" 
+                                rows="10"
+                                placeholder="Ej:&#10;1. Mezclar harina y sal en un bowl grande&#10;2. Agregar levadura al agua tibia&#10;3. Incorporar líquidos a la harina..."
+                                required
+                            ></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary" id="submit-btn">
+                                <i class="fas fa-save"></i>
+                                Guardar Receta
+                            </button>
+                            <button type="button" class="btn-secondary" id="cancel-btn">
+                                <i class="fas fa-times"></i>
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Success Message -->
+                    <div id="success-message" class="alert alert-success" style="display: none;">
+                        <i class="fas fa-check-circle"></i>
+                        <span>¡Receta guardada exitosamente!</span>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div id="error-message" class="alert alert-error" style="display: none;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span id="error-text">Error al guardar la receta</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal for Recipe Details -->
+    <div id="recipe-modal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Cerrar modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-body">
+                <div class="modal-header">
+                    <h2 id="modal-recipe-name"></h2>
+                    <span id="modal-recipe-category" class="category-badge"></span>
+                </div>
+                <div class="modal-details">
+                    <div class="ingredients-section">
+                        <h3><i class="fas fa-list-ul"></i> Ingredientes</h3>
+                        <ul id="modal-ingredients-list"></ul>
+                    </div>
+                    <div class="instructions-section">
+                        <h3><i class="fas fa-clipboard-list"></i> Instrucciones</h3>
+                        <div id="modal-instructions-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 PACO PAN CASERO - Sistema de Gestión de Recetas</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

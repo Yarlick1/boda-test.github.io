@@ -55,7 +55,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function initializeApp() {
   setupEventListeners()
+  
+  // Cargar recetas
   loadRecipes()
+  
+  // Timeout de seguridad: ocultar splash screen después de 5 segundos
+  // (por si acaso las recetas tardan mucho en cargar)
+  setTimeout(() => {
+    hideSplashScreen()
+  }, 5000)
+}
+
+// Función para ocultar la pantalla de splash
+function hideSplashScreen() {
+  const splashScreen = document.getElementById("splash-screen")
+  if (splashScreen) {
+    // Agregar clase 'hidden' para activar la transición
+    splashScreen.classList.add("hidden")
+    
+    // Remover del DOM después de que termine la animación
+    setTimeout(() => {
+      splashScreen.remove()
+    }, 800) // Esperar a que termine la transición (0.8s)
+  }
 }
 
 // ===================================
@@ -192,6 +214,8 @@ function renderRecipes() {
 
   if (filteredRecipes.length === 0) {
     emptyState.style.display = "block"
+    // Ocultar splash screen cuando termine de cargar (incluso si no hay recetas)
+    hideSplashScreen()
     return
   }
 
@@ -201,6 +225,9 @@ function renderRecipes() {
     const card = createRecipeCard(recipe)
     container.appendChild(card)
   })
+
+  // Ocultar splash screen después de renderizar las recetas
+  hideSplashScreen()
 }
 
 function createRecipeCard(recipe) {

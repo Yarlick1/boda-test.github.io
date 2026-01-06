@@ -25,7 +25,7 @@ Este archivo contiene el código que debes copiar y pegar en Google Apps Script 
 // CONFIGURACIÓN
 // ===================================
 const SHEET_NAME = "Recetas"; // Nombre de tu hoja de Google Sheets
-const ADMIN_PASSWORD = "12345"; // Contraseña para administración (CAMBIAR POR LA TUYA)
+const ADMIN_PASSWORD = "pacobebo1"; // Contraseña para administración (CAMBIAR POR LA TUYA)
 
 // ===================================
 // FUNCIÓN PRINCIPAL - GET

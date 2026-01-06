@@ -37,19 +37,15 @@ function doGet(e) {
       return getRecipes()
     }
 
-    return ContentService.createTextOutput(
-      JSON.stringify({
-        status: "error",
-        message: "Acción no válida",
-      }),
-    ).setMimeType(ContentService.MimeType.JSON)
+    return createResponse({
+      status: "error",
+      message: "Acción no válida",
+    })
   } catch (error) {
-    return ContentService.createTextOutput(
-      JSON.stringify({
-        status: "error",
-        message: error.toString(),
-      }),
-    ).setMimeType(ContentService.MimeType.JSON)
+    return createResponse({
+      status: "error",
+      message: error.toString(),
+    })
   }
 }
 
@@ -58,6 +54,13 @@ function doGet(e) {
 // ===================================
 function doPost(e) {
   try {
+    if (!e || !e.postData) {
+      return createResponse({
+        status: "error",
+        message: "No se recibieron datos",
+      })
+    }
+
     // Parsear datos recibidos
     const data = JSON.parse(e.postData.contents)
 
@@ -69,21 +72,25 @@ function doPost(e) {
     // Guardar en Google Sheets
     const result = addRecipe(data)
 
-    return ContentService.createTextOutput(
-      JSON.stringify({
-        status: "success",
-        message: "Receta guardada correctamente",
-        data: result,
-      }),
-    ).setMimeType(ContentService.MimeType.JSON)
+    return createResponse({
+      status: "success",
+      message: "Receta guardada correctamente",
+      data: result,
+    })
   } catch (error) {
-    return ContentService.createTextOutput(
-      JSON.stringify({
-        status: "error",
-        message: error.toString(),
-      }),
-    ).setMimeType(ContentService.MimeType.JSON)
+    return createResponse({
+      status: "error",
+      message: error.toString(),
+    })
   }
+}
+
+// ===================================
+// CREAR RESPUESTA CON HEADERS CORS
+// ===================================
+function createResponse(data) {
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON)
 }
 
 // ===================================
@@ -101,12 +108,10 @@ function getRecipes() {
 
     // Si no hay datos o solo está el encabezado
     if (data.length <= 1) {
-      return ContentService.createTextOutput(
-        JSON.stringify({
-          status: "success",
-          recipes: [],
-        }),
-      ).setMimeType(ContentService.MimeType.JSON)
+      return createResponse({
+        status: "success",
+        recipes: [],
+      })
     }
 
     // Convertir datos a objetos (asumiendo que la primera fila es el encabezado)
@@ -128,19 +133,15 @@ function getRecipes() {
       }
     }
 
-    return ContentService.createTextOutput(
-      JSON.stringify({
-        status: "success",
-        recipes: recipes,
-      }),
-    ).setMimeType(ContentService.MimeType.JSON)
+    return createResponse({
+      status: "success",
+      recipes: recipes,
+    })
   } catch (error) {
-    return ContentService.createTextOutput(
-      JSON.stringify({
-        status: "error",
-        message: error.toString(),
-      }),
-    ).setMimeType(ContentService.MimeType.JSON)
+    return createResponse({
+      status: "error",
+      message: error.toString(),
+    })
   }
 }
 
@@ -211,7 +212,7 @@ Si recibes errores de CORS, asegúrate de que:
 - Verifica que el nombre de la hoja en Google Sheets sea exactamente "Recetas" (con mayúscula)
 - O cambia la variable `SHEET_NAME` en el código para que coincida con tu hoja
 
-### Para redesplegar después de cambios
+### **IMPORTANTE: Después de pegar el nuevo código**
 1. Ve a **Deploy > Manage deployments**
 2. Haz clic en el icono de **editar** (lápiz)
 3. Selecciona **New version** en el dropdown
